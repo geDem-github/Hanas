@@ -21,62 +21,72 @@ private enum class FontSize(val value: TextUnit) {
     L(30.sp),
     M(24.sp),
     S(20.sp),
-    XS(16.sp)
+    XS(16.sp),
 }
 
 class Typography(initialColor: Color) {
-    val xlBold = TextStyle(
-        fontFamily = zenMaruGothicBold,
-        fontSize = FontSize.XL.value,
-        color = initialColor
-    )
-    val xlRegular = TextStyle(
-        fontFamily = zenMaruGothicRegular,
-        fontSize = FontSize.XL.value,
-        color = initialColor
-    )
+    val xlBold =
+        TextStyle(
+            fontFamily = zenMaruGothicBold,
+            fontSize = FontSize.XL.value,
+            color = initialColor,
+        )
+    val xlRegular =
+        TextStyle(
+            fontFamily = zenMaruGothicRegular,
+            fontSize = FontSize.XL.value,
+            color = initialColor,
+        )
 
-    val lBold = TextStyle(
-        fontFamily = zenMaruGothicBold,
-        fontSize = FontSize.L.value,
-        color = initialColor
-    )
-    val lRegular = TextStyle(
-        fontFamily = zenMaruGothicRegular,
-        fontSize = FontSize.L.value,
-        color = initialColor
-    )
+    val lBold =
+        TextStyle(
+            fontFamily = zenMaruGothicBold,
+            fontSize = FontSize.L.value,
+            color = initialColor,
+        )
+    val lRegular =
+        TextStyle(
+            fontFamily = zenMaruGothicRegular,
+            fontSize = FontSize.L.value,
+            color = initialColor,
+        )
 
-    val mBold  = TextStyle(
-        fontFamily = zenMaruGothicBold,
-        fontSize = FontSize.M.value,
-        color = initialColor
-    )
-    val mRegular = TextStyle(
-        fontFamily = zenMaruGothicRegular,
-        fontSize = FontSize.M.value,
-        color = initialColor
-    )
+    val mBold =
+        TextStyle(
+            fontFamily = zenMaruGothicBold,
+            fontSize = FontSize.M.value,
+            color = initialColor,
+        )
+    val mRegular =
+        TextStyle(
+            fontFamily = zenMaruGothicRegular,
+            fontSize = FontSize.M.value,
+            color = initialColor,
+        )
 
-    val sBold  = TextStyle(
-        fontFamily = zenMaruGothicBold,
-        fontSize = FontSize.S.value,
-        color = initialColor
-    )
-    val sRegular = TextStyle(
-        fontFamily = zenMaruGothicRegular,
-        fontSize = FontSize.S.value,
-        color = initialColor
-    )
+    val sBold =
+        TextStyle(
+            fontFamily = zenMaruGothicBold,
+            fontSize = FontSize.S.value,
+            color = initialColor,
+        )
+    val sRegular =
+        TextStyle(
+            fontFamily = zenMaruGothicRegular,
+            fontSize = FontSize.S.value,
+            color = initialColor,
+        )
 
-    val xsBold  = TextStyle(
-        fontFamily = zenMaruGothicBold,
-        fontSize = FontSize.XS.value,
-        color = initialColor
-    )
-    val xsRegular = TextStyle(
-        fontFamily = zenMaruGothicRegular,
-        fontSize = FontSize.XS.value,
-        color = initialColor
-    )
+    val xsBold =
+        TextStyle(
+            fontFamily = zenMaruGothicBold,
+            fontSize = FontSize.XS.value,
+            color = initialColor,
+        )
+    val xsRegular =
+        TextStyle(
+            fontFamily = zenMaruGothicRegular,
+            fontSize = FontSize.XS.value,
+            color = initialColor,
+        )
 }

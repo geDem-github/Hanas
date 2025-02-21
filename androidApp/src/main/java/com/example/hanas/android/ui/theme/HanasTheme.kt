@@ -7,7 +7,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val LocalColorScheme = staticCompositionLocalOf<ColorScheme>{ LightColorScheme }
+val LocalColorScheme = staticCompositionLocalOf<ColorScheme> { LightColorScheme }
 val LocalTypography = staticCompositionLocalOf { Typography(Color.Unspecified) }
 
 object HanasTheme {
@@ -23,9 +23,7 @@ object HanasTheme {
 }
 
 @Composable
-fun HanasTheme(
-    content: @Composable () -> Unit
-) {
+fun HanasTheme(content: @Composable () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
     val colorScheme = if (isDarkTheme) LightColorScheme else DarkColorScheme
     val typography = Typography(if (isDarkTheme) colorScheme.white else colorScheme.black)
@@ -33,6 +31,6 @@ fun HanasTheme(
     CompositionLocalProvider(
         LocalColorScheme provides colorScheme,
         LocalTypography provides typography,
-        content = content
+        content = content,
     )
 }
