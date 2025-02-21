@@ -25,8 +25,8 @@ object HanasTheme {
 @Composable
 fun HanasTheme(content: @Composable () -> Unit) {
     val isDarkTheme = isSystemInDarkTheme()
-    val colorScheme = if (isDarkTheme) LightColorScheme else DarkColorScheme
-    val typography = Typography(if (isDarkTheme) colorScheme.white else colorScheme.black)
+    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+    val typography = Typography(colorScheme.text)
 
     CompositionLocalProvider(
         LocalColorScheme provides colorScheme,

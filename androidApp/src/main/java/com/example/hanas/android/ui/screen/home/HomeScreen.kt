@@ -10,7 +10,7 @@ import com.example.hanas.android.ui.theme.HanasTheme
 
 @Composable
 fun HomeScreen() {
-    Column(Modifier.background(HanasTheme.colorScheme.darkGray).fillMaxSize()) {
+    Column(Modifier.background(HanasTheme.colorScheme.background).fillMaxSize()) {
         Text("Hello, world!", style = HanasTheme.typography.xlBold)
         Text("Hello, world!", style = HanasTheme.typography.lBold)
         Text("Hello, world!", style = HanasTheme.typography.mBold)
