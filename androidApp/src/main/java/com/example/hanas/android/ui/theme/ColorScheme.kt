@@ -11,6 +11,9 @@ interface ColorScheme {
     val background: Color
     val secondaryBackground: Color
 
+    // 影
+    val shadow: Color
+
     // 白
     val white: Color
 
@@ -18,9 +21,15 @@ interface ColorScheme {
     val black: Color
 
     // グレー
-    val lightGray: Color
-    val gray: Color
-    val darkGray: Color
+    val gray100: Color
+    val gray200: Color
+    val gray300: Color
+    val gray400: Color
+    val gray500: Color
+    val gray600: Color
+    val gray700: Color
+    val gray800: Color
+    val gray900: Color
 
     // 黄色
     val lightYellow: Color
@@ -60,20 +69,26 @@ interface ColorScheme {
 
 abstract class BaseColorScheme : ColorScheme {
     // 白
-    override val white: Color = Color(0xfff0f0f0)
+    override val white: Color = Color(0xffffffff)
 
     // 黒
-    override val black: Color = Color(0xff0f0f0f)
+    override val black: Color = Color(0xff000000)
 
     // グレー
-    override val lightGray: Color = Color(0xffbababa)
-    override val gray: Color = Color(0xff696969)
-    override val darkGray: Color = Color(0xFF3B3B3B)
+    override val gray100 = Color(0xFFF3F3F3)
+    override val gray200 = Color(0xFFEEEEEE)
+    override val gray300 = Color(0xFFE0E0E0)
+    override val gray400 = Color(0xFFBDBDBD)
+    override val gray500 = Color(0xFF9E9E9E)
+    override val gray600 = Color(0xFF757575)
+    override val gray700 = Color(0xFF616161)
+    override val gray800 = Color(0xFF424242)
+    override val gray900 = Color(0xFF212121)
 
     // 黄色
-    override val lightYellow: Color = Color(0xFFFFE994)
-    override val yellow: Color = Color(0xFFFFD94C)
-    override val darkYellow: Color = Color(0xFF9F8C44)
+    override val lightYellow: Color = Color(0xFFDCC389)
+    override val yellow: Color = Color(0xFFD5AB3E)
+    override val darkYellow: Color = Color(0xFF866E2B)
 
     // オレンジ
     override val lightOrange: Color = Color(0xFFFFBD92)
@@ -91,9 +106,9 @@ abstract class BaseColorScheme : ColorScheme {
     override val darkGreen: Color = Color(0xFF286E21)
 
     // ピンク
-    override val lightPink: Color = Color(0xFFFFA3FD)
-    override val pink: Color = Color(0xFFE758DE)
-    override val darkPink: Color = Color(0xFFAD50A8)
+    override val lightPink: Color = Color(0xFFC9879E)
+    override val pink: Color = Color(0xFFE1628A)
+    override val darkPink: Color = Color(0xFF8F445D)
 
     // 青
     override val lightBlue: Color = Color(0xFF86AAFF)
@@ -108,14 +123,16 @@ abstract class BaseColorScheme : ColorScheme {
 
 object LightColorScheme : BaseColorScheme() {
     override val text: Color = black
-    override val secondaryText: Color = darkGray
+    override val secondaryText: Color = gray800
     override val background: Color = white
-    override val secondaryBackground: Color = lightGray
+    override val secondaryBackground: Color = gray100
+    override val shadow: Color = black
 }
 
 object DarkColorScheme : BaseColorScheme() {
     override val text: Color = white
-    override val secondaryText: Color = lightGray
+    override val secondaryText: Color = gray200
     override val background: Color = black
-    override val secondaryBackground: Color = darkGray
+    override val secondaryBackground: Color = gray900
+    override val shadow: Color = white
 }

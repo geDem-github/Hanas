@@ -1,6 +1,7 @@
 package com.example.hanas.android.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -28,9 +29,11 @@ fun HanasTheme(content: @Composable () -> Unit) {
     val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
     val typography = Typography(colorScheme.text)
 
-    CompositionLocalProvider(
-        LocalColorScheme provides colorScheme,
-        LocalTypography provides typography,
-        content = content,
-    )
+    MaterialTheme {
+        CompositionLocalProvider(
+            LocalColorScheme provides colorScheme,
+            LocalTypography provides typography,
+            content = content,
+        )
+    }
 }

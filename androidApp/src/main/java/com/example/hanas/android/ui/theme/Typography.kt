@@ -17,11 +17,11 @@ private object ZenMaruGothic {
 }
 
 private enum class FontSize(val value: TextUnit) {
-    XL(36.sp),
-    L(30.sp),
-    M(24.sp),
-    S(20.sp),
-    XS(16.sp),
+    XL(28.sp),
+    L(24.sp),
+    M(20.sp),
+    S(16.sp),
+    XS(12.sp),
 }
 
 class Typography(initialColor: Color) {
