@@ -10,21 +10,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,47 +42,47 @@ fun HomeScreen() {
         listOf(
             ChatNavCardUiModel(
                 "フリートーク",
-                Icons.Outlined.Email,
-                listOf(HanasTheme.colorScheme.gray300, HanasTheme.colorScheme.gray600),
+                "🚌",
+                HanasTheme.colorScheme.green,
             ),
             ChatNavCardUiModel(
                 "キャンプ",
-                Icons.Outlined.Home,
-                listOf(HanasTheme.colorScheme.lightYellow, HanasTheme.colorScheme.yellow),
+                "🐶",
+                HanasTheme.colorScheme.pink,
             ),
             ChatNavCardUiModel(
                 "趣味",
-                Icons.Outlined.Delete,
-                listOf(HanasTheme.colorScheme.lightBlue, HanasTheme.colorScheme.blue),
+                "✈️",
+                HanasTheme.colorScheme.orange,
             ),
             ChatNavCardUiModel(
                 "自己紹介",
-                Icons.Outlined.KeyboardArrowDown,
-                listOf(HanasTheme.colorScheme.lightPink, HanasTheme.colorScheme.pink),
+                "🍤",
+                HanasTheme.colorScheme.blue,
             ),
             ChatNavCardUiModel(
                 "自己紹介",
-                Icons.Outlined.LocationOn,
-                listOf(HanasTheme.colorScheme.lightGreen, HanasTheme.colorScheme.green),
+                "🍪",
+                HanasTheme.colorScheme.purple,
             ),
         )
     val lessonNavCards =
         listOf(
             LessonNavCardUiModel(
                 title = "今日のレッスン①",
-                icon = Icons.Default.Home,
+                emoji = "🍪",
                 status = LessonNavCardStatus.InProgress,
                 color = HanasTheme.colorScheme.pink,
             ),
             LessonNavCardUiModel(
                 title = "今日のレッスン②",
-                icon = Icons.Default.CheckCircle,
+                emoji = "\uD83C\uDF64",
                 status = LessonNavCardStatus.Completed,
                 color = HanasTheme.colorScheme.orange,
             ),
             LessonNavCardUiModel(
                 title = "旅行で使える言い回し",
-                icon = Icons.Default.Add,
+                emoji = "\uD83D\uDC36",
                 status = LessonNavCardStatus.NotStarted,
                 color = HanasTheme.colorScheme.purple,
             ),
@@ -140,11 +130,11 @@ fun HomeScreen() {
                 title = "AIチャット",
                 emoji = "\uD83D\uDDE3\uFE0F",
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     chatNavCards.chunked(2).forEach { rowItems ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             rowItems.forEach { rowItem ->
                                 ChatNavCard(
@@ -160,9 +150,7 @@ fun HomeScreen() {
                                             .clickable {
                                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                             },
-                                    text = rowItem.title,
-                                    icon = rowItem.icon,
-                                    gradientColors = rowItem.backgroundGradientColor,
+                                    uiModel = rowItem,
                                 )
 
                                 if (rowItems.size < 2) {
@@ -181,14 +169,17 @@ fun HomeScreen() {
                 title = "学習",
                 emoji = "📔",
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
                     lessonNavCards.forEach { lessonNavCard ->
                         LessonNavCard(
                             modifier =
                                 Modifier
                                     .shadow(
-                                        elevation = 2.dp,
-                                        shape = RoundedCornerShape(4.dp),
+                                        elevation = 4.dp,
+                                        shape = RoundedCornerShape(8.dp),
                                         ambientColor = HanasTheme.colorScheme.shadow,
                                         spotColor = HanasTheme.colorScheme.shadow,
                                     )
@@ -214,7 +205,7 @@ private fun SectionContainer(
     Column(
         modifier =
             modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 12.dp)
                 .padding(top = 32.dp, bottom = 40.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {

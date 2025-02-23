@@ -10,21 +10,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.hanas.android.ui.theme.HanasTheme
 
 data class LessonNavCardUiModel(
     val title: String,
-    val icon: ImageVector,
+    val emoji: String,
     val status: LessonNavCardStatus,
     val color: Color,
 )
@@ -61,7 +58,7 @@ fun LessonNavCard(
     Box(
         modifier =
             modifier
-                .height(100.dp)
+                .height(80.dp)
                 .fillMaxWidth()
                 .background(HanasTheme.colorScheme.background)
                 .padding(horizontal = 20.dp),
@@ -71,26 +68,12 @@ fun LessonNavCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Box(
-                modifier =
-                    Modifier
-                        .size(44.dp)
-                        .shadow(
-                            elevation = 2.dp,
-                            shape = CircleShape,
-                            ambientColor = HanasTheme.colorScheme.shadow,
-                            spotColor = HanasTheme.colorScheme.shadow,
-                        )
-                        .background(uiModel.color, shape = CircleShape),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    modifier = Modifier.size(28.dp),
-                    imageVector = uiModel.icon,
-                    contentDescription = null,
-                    tint = HanasTheme.colorScheme.text,
-                )
-            }
+            GradientEmojiContainer(
+                modifier = Modifier.size(48.dp),
+                emoji = uiModel.emoji,
+                color = uiModel.color,
+                shape = CircleShape,
+            )
 
             Text(
                 modifier = Modifier.weight(1f),

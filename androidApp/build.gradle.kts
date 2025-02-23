@@ -5,6 +5,12 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
+// ktlint {
+//    filter {
+//        exclude { it.file.path.contains("extension") }
+//    }
+// }
+
 android {
     namespace = "com.example.hanas.android"
     compileSdk = 35
