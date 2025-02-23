@@ -3,13 +3,8 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ktlint)
+    kotlin(libs.plugins.serialization.get().pluginId).version(libs.versions.serialization)
 }
-
-// ktlint {
-//    filter {
-//        exclude { it.file.path.contains("extension") }
-//    }
-// }
 
 android {
     namespace = "com.example.hanas.android"
@@ -55,4 +50,6 @@ dependencies {
     implementation(libs.compose.viewmodel)
     // Navigation
     implementation(libs.compose.navigation)
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
 }
