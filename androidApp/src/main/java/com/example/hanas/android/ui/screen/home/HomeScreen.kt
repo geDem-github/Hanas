@@ -36,7 +36,7 @@ import com.example.hanas.android.ui.component.LessonNavCardUiModel
 import com.example.hanas.android.ui.theme.HanasTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onClickChatNavCard: () -> Unit) {
     val haptic = LocalHapticFeedback.current
     val chatNavCards =
         listOf(
@@ -149,6 +149,7 @@ fun HomeScreen() {
                                             )
                                             .clickable {
                                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                                onClickChatNavCard()
                                             },
                                     uiModel = rowItem,
                                 )
@@ -222,6 +223,6 @@ private fun SectionContainer(
 @Composable
 private fun Preview() {
     HanasTheme {
-        HomeScreen()
+        HomeScreen({})
     }
 }
