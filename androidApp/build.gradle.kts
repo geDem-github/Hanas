@@ -53,4 +53,6 @@ dependencies {
 
     // ViewModel
     implementation(libs.compose.viewmodel)
+    // Navigation
+    implementation(libs.compose.navigation)
 }
