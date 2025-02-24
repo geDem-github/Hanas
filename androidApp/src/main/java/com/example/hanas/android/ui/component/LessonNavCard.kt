@@ -60,7 +60,7 @@ fun LessonNavCard(
             modifier
                 .height(80.dp)
                 .fillMaxWidth()
-                .background(HanasTheme.colorScheme.background)
+                .background(HanasTheme.colorScheme.secondaryBackground)
                 .padding(horizontal = 20.dp),
         contentAlignment = Alignment.CenterStart,
     ) {

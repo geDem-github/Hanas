@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -90,20 +89,29 @@ fun HomeScreen(onClickChatNavCard: () -> Unit) {
 
     Column(
         Modifier
-            .background(HanasTheme.colorScheme.background)
+            .background(HanasTheme.colorScheme.primaryBackground)
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
             .padding(vertical = 24.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 4.dp)
-                    .clip(shape = RoundedCornerShape(Int.MAX_VALUE.dp))
-                    .background(HanasTheme.colorScheme.secondaryBackground)
+                    .padding(horizontal = 12.dp)
+                    .padding(top = 8.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(Int.MAX_VALUE.dp),
+                        ambientColor = HanasTheme.colorScheme.shadow,
+                        spotColor = HanasTheme.colorScheme.shadow,
+                    )
+                    .background(
+                        color = HanasTheme.colorScheme.secondaryBackground,
+                        shape = RoundedCornerShape(Int.MAX_VALUE.dp),
+                    )
                     .clickable {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     }
@@ -116,7 +124,7 @@ fun HomeScreen(onClickChatNavCard: () -> Unit) {
             Column {
                 Text("Tutor", style = HanasTheme.typography.xsRegular)
                 Text(
-                    "Welcome back!",
+                    "Welcome back!👋",
                     style = HanasTheme.typography.mBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -166,7 +174,7 @@ fun HomeScreen(onClickChatNavCard: () -> Unit) {
             SectionContainer(
                 modifier =
                     Modifier
-                        .background(HanasTheme.colorScheme.secondaryBackground),
+                        .background(HanasTheme.colorScheme.tertiaryBackground),
                 title = "学習",
                 emoji = "📔",
             ) {

@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,12 +26,13 @@ sealed interface HanasScreen {
 }
 
 @Composable
-fun App() {
+fun HanasApp() {
     val navController = rememberNavController()
 
     MaterialTheme {
         HanasTheme {
             NavHost(
+                modifier = Modifier,
                 navController = navController,
                 startDestination = HanasScreen.Home,
                 enterTransition = {

@@ -44,7 +44,7 @@ fun ChatNavCard(
         Text(
             text = uiModel.title,
             style = HanasTheme.typography.sBold,
-            color = HanasTheme.colorScheme.text,
+            color = HanasTheme.colorScheme.primaryText,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

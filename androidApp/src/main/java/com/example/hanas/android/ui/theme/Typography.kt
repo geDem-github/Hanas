@@ -9,11 +9,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.example.hanas.android.R
 import com.example.hanas.android.ui.theme.ZenMaruGothic.zenMaruGothicBold
-import com.example.hanas.android.ui.theme.ZenMaruGothic.zenMaruGothicRegular
+import com.example.hanas.android.ui.theme.ZenMaruGothic.zenMaruGothicMedium
 
 private object ZenMaruGothic {
     val zenMaruGothicBold = FontFamily(Font(resId = R.font.zenmarugothic_bold, FontWeight.Normal))
-    val zenMaruGothicRegular = FontFamily(Font(resId = R.font.zenmarugothic_regular, FontWeight.Bold))
+    val zenMaruGothicMedium = FontFamily(Font(resId = R.font.zenmarugothic_medium, FontWeight.Bold))
 }
 
 private enum class FontSize(val value: TextUnit) {
@@ -33,7 +33,7 @@ class Typography(initialColor: Color) {
         )
     val xlRegular =
         TextStyle(
-            fontFamily = zenMaruGothicRegular,
+            fontFamily = zenMaruGothicMedium,
             fontSize = FontSize.XL.value,
             color = initialColor,
         )
@@ -46,7 +46,7 @@ class Typography(initialColor: Color) {
         )
     val lRegular =
         TextStyle(
-            fontFamily = zenMaruGothicRegular,
+            fontFamily = zenMaruGothicMedium,
             fontSize = FontSize.L.value,
             color = initialColor,
         )
@@ -59,7 +59,7 @@ class Typography(initialColor: Color) {
         )
     val mRegular =
         TextStyle(
-            fontFamily = zenMaruGothicRegular,
+            fontFamily = zenMaruGothicMedium,
             fontSize = FontSize.M.value,
             color = initialColor,
         )
@@ -72,7 +72,7 @@ class Typography(initialColor: Color) {
         )
     val sRegular =
         TextStyle(
-            fontFamily = zenMaruGothicRegular,
+            fontFamily = zenMaruGothicMedium,
             fontSize = FontSize.S.value,
             color = initialColor,
         )
@@ -85,7 +85,7 @@ class Typography(initialColor: Color) {
         )
     val xsRegular =
         TextStyle(
-            fontFamily = zenMaruGothicRegular,
+            fontFamily = zenMaruGothicMedium,
             fontSize = FontSize.XS.value,
             color = initialColor,
         )

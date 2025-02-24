@@ -4,12 +4,19 @@ import androidx.compose.ui.graphics.Color
 
 interface ColorScheme {
     // テキスト
-    val text: Color
+    val primaryText: Color
     val secondaryText: Color
 
     // 背景色
-    val background: Color
+    val primaryBackground: Color
     val secondaryBackground: Color
+    val tertiaryBackground: Color
+
+    // ボーダー
+    val border: Color
+
+    // アイコン
+    val icon: Color
 
     // 影
     val shadow: Color
@@ -75,20 +82,20 @@ abstract class BaseColorScheme : ColorScheme {
     override val black: Color = Color(0xff000000)
 
     // グレー
-    override val gray100 = Color(0xFFF3F3F3)
-    override val gray200 = Color(0xFFEEEEEE)
+    override val gray100 = Color(0xFFFAFAFA)
+    override val gray200 = Color(0xFFF0F0F0)
     override val gray300 = Color(0xFFE0E0E0)
-    override val gray400 = Color(0xFFBDBDBD)
-    override val gray500 = Color(0xFF9E9E9E)
-    override val gray600 = Color(0xFF757575)
-    override val gray700 = Color(0xFF616161)
-    override val gray800 = Color(0xFF424242)
-    override val gray900 = Color(0xFF212121)
+    override val gray400 = Color(0xFFC0C0C0)
+    override val gray500 = Color(0xFFA0A0A0)
+    override val gray600 = Color(0xFF808080)
+    override val gray700 = Color(0xFF606060)
+    override val gray800 = Color(0xFF404040)
+    override val gray900 = Color(0xFF202020)
 
     // 黄色
-    override val lightYellow: Color = Color(0xFFDCC389)
-    override val yellow: Color = Color(0xFFD5AB3E)
-    override val darkYellow: Color = Color(0xFF866E2B)
+    override val lightYellow: Color = Color(0xFFE5CD91)
+    override val yellow: Color = Color(0xFFE5B43E)
+    override val darkYellow: Color = Color(0xFF9F7F2F)
 
     // オレンジ
     override val lightOrange: Color = Color(0xFFFFBD92)
@@ -122,17 +129,23 @@ abstract class BaseColorScheme : ColorScheme {
 }
 
 object LightColorScheme : BaseColorScheme() {
-    override val text: Color = black
+    override val primaryText: Color = black
     override val secondaryText: Color = gray800
-    override val background: Color = white
-    override val secondaryBackground: Color = gray100
-    override val shadow: Color = black
+    override val primaryBackground: Color = gray100
+    override val secondaryBackground: Color = white
+    override val tertiaryBackground: Color = gray200
+    override val shadow: Color = gray900
+    override val border: Color = gray800
+    override val icon: Color = black
 }
 
 object DarkColorScheme : BaseColorScheme() {
-    override val text: Color = white
+    override val primaryText: Color = white
     override val secondaryText: Color = gray200
-    override val background: Color = black
-    override val secondaryBackground: Color = gray900
-    override val shadow: Color = white
+    override val primaryBackground: Color = black
+    override val secondaryBackground: Color = gray800
+    override val tertiaryBackground: Color = gray900
+    override val shadow: Color = gray100
+    override val border: Color = gray200
+    override val icon: Color = white
 }
