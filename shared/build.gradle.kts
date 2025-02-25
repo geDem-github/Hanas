@@ -35,6 +35,8 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             // Koin
             implementation(libs.koin.core)
+            // Coroutines
+            implementation(libs.kotlinx.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
