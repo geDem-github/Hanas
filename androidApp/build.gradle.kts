@@ -46,8 +46,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     debugImplementation(libs.compose.ui.tooling)
 
-    // ViewModel
-    implementation(libs.compose.viewmodel)
     // Navigation
     implementation(libs.compose.navigation)
     // Serialization
