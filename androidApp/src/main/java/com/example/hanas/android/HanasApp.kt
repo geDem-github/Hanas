@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -63,7 +64,13 @@ fun HanasApp() {
                 composable<HanasScreen.Home> {
                     HomeScreen(
                         onClickChatNavCard = {
-                            navController.navigate(HanasScreen.Chat)
+                            navController.navigate(HanasScreen.Chat) {
+                                popUpTo(checkNotNull(navController.graph.findStartDestination().route)) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         },
                     )
                 }

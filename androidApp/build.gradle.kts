@@ -52,4 +52,9 @@ dependencies {
     implementation(libs.compose.navigation)
     // Serialization
     implementation(libs.kotlinx.serialization.json)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.viewmodel)
+    implementation(libs.koin.viewmodel.navigation)
 }

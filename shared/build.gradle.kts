@@ -33,6 +33,8 @@ kotlin {
         commonMain.dependencies {
             // Serialization
             implementation(libs.kotlinx.serialization.json)
+            // Koin
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
