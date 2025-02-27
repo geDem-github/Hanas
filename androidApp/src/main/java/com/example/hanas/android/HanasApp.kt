@@ -8,23 +8,12 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.hanas.android.ui.screen.home.ChatScreen
-import com.example.hanas.android.ui.screen.home.HomeScreen
+import com.example.hanas.android.ui.feature.chat.navigation.chatScreen
+import com.example.hanas.android.ui.feature.home.navigation.HomeScreenDestination
+import com.example.hanas.android.ui.feature.home.navigation.homeScreen
 import com.example.hanas.android.ui.theme.HanasTheme
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed interface HanasScreen {
-    @Serializable
-    data object Home : HanasScreen
-
-    @Serializable
-    data object Chat : HanasScreen
-}
 
 @Composable
 fun HanasApp() {
@@ -35,7 +24,7 @@ fun HanasApp() {
             NavHost(
                 modifier = Modifier,
                 navController = navController,
-                startDestination = HanasScreen.Home,
+                startDestination = HomeScreenDestination,
                 enterTransition = {
                     slideInHorizontally(
                         initialOffsetX = { it },
@@ -61,23 +50,9 @@ fun HanasApp() {
                     ) + fadeOut()
                 },
             ) {
-                composable<HanasScreen.Home> {
-                    HomeScreen(
-                        onClickChatNavCard = {
-                            navController.navigate(HanasScreen.Chat) {
-                                popUpTo(checkNotNull(navController.graph.findStartDestination().route)) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                    )
-                }
+                homeScreen(navController = navController)
 
-                composable<HanasScreen.Chat> {
-                    ChatScreen()
-                }
+                chatScreen(navController = navController)
             }
         }
     }

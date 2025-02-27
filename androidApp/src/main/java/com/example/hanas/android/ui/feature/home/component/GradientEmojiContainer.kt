@@ -1,4 +1,4 @@
-package com.example.hanas.android.ui.component
+package com.example.hanas.android.ui.feature.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

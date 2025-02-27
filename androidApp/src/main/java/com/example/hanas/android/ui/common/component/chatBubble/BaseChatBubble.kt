@@ -1,4 +1,4 @@
-package com.example.hanas.android.ui.component.chatBubble
+package com.example.hanas.android.ui.feature.chat.component.chatBubble
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

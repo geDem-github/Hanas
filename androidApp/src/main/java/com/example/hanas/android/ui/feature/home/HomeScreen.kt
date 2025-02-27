@@ -1,4 +1,4 @@
-package com.example.hanas.android.ui.screen.home
+package com.example.hanas.android.ui.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -26,66 +27,50 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.hanas.android.ui.component.AvatarIcon
-import com.example.hanas.android.ui.component.ChatNavCard
-import com.example.hanas.android.ui.component.ChatNavCardUiModel
-import com.example.hanas.android.ui.component.LessonNavCard
-import com.example.hanas.android.ui.component.LessonNavCardStatus
-import com.example.hanas.android.ui.component.LessonNavCardUiModel
+import androidx.navigation.NavController
+import com.example.hanas.android.R
+import com.example.hanas.android.ui.common.EventFlow
+import com.example.hanas.android.ui.common.rememberEventFlow
+import com.example.hanas.android.ui.feature.home.component.AvatarIcon
+import com.example.hanas.android.ui.feature.home.component.ChatNavCard
+import com.example.hanas.android.ui.feature.home.component.ChatNavCardUiModel
+import com.example.hanas.android.ui.feature.home.component.LessonNavCard
+import com.example.hanas.android.ui.feature.home.component.LessonNavCardUiModel
 import com.example.hanas.android.ui.theme.HanasTheme
+import java.util.UUID
 
 @Composable
-fun HomeScreen(onClickChatNavCard: () -> Unit) {
+fun HomeScreen(
+    navController: NavController,
+    eventFlow: EventFlow<HomeScreenEvent> = rememberEventFlow(),
+    uiState: HomeUiState =
+        homeScreenPresenter(
+            navController = navController,
+            eventFlow = eventFlow,
+        ),
+) {
+    HomeScreen(
+        chatNavCards = uiState.chatNavCards,
+        lessonNavCards = uiState.lessonNavCards,
+        onAppear = {
+            eventFlow.tryEmit(HomeScreenEvent.OnAppear)
+        },
+        onClickChatNavCard = {
+            eventFlow.tryEmit(HomeScreenEvent.OnSelectChat(UUID.randomUUID()))
+        },
+    )
+}
+
+@Composable
+fun HomeScreen(
+    chatNavCards: List<ChatNavCardUiModel>,
+    lessonNavCards: List<LessonNavCardUiModel>,
+    onAppear: () -> Unit,
+    onClickChatNavCard: () -> Unit,
+) {
     val haptic = LocalHapticFeedback.current
-    val chatNavCards =
-        listOf(
-            ChatNavCardUiModel(
-                "フリートーク",
-                "🚌",
-                HanasTheme.colorScheme.green,
-            ),
-            ChatNavCardUiModel(
-                "キャンプ",
-                "🐶",
-                HanasTheme.colorScheme.pink,
-            ),
-            ChatNavCardUiModel(
-                "趣味",
-                "✈️",
-                HanasTheme.colorScheme.orange,
-            ),
-            ChatNavCardUiModel(
-                "自己紹介",
-                "🍤",
-                HanasTheme.colorScheme.blue,
-            ),
-            ChatNavCardUiModel(
-                "自己紹介",
-                "🍪",
-                HanasTheme.colorScheme.purple,
-            ),
-        )
-    val lessonNavCards =
-        listOf(
-            LessonNavCardUiModel(
-                title = "今日のレッスン①",
-                emoji = "🍪",
-                status = LessonNavCardStatus.InProgress,
-                color = HanasTheme.colorScheme.pink,
-            ),
-            LessonNavCardUiModel(
-                title = "今日のレッスン②",
-                emoji = "\uD83C\uDF64",
-                status = LessonNavCardStatus.Completed,
-                color = HanasTheme.colorScheme.orange,
-            ),
-            LessonNavCardUiModel(
-                title = "旅行で使える言い回し",
-                emoji = "\uD83D\uDC36",
-                status = LessonNavCardStatus.NotStarted,
-                color = HanasTheme.colorScheme.purple,
-            ),
-        )
+
+    LaunchedEffect(Unit) { onAppear() }
 
     Column(
         Modifier
@@ -119,7 +104,7 @@ fun HomeScreen(onClickChatNavCard: () -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AvatarIcon(painterResource(id = android.R.drawable.ic_menu_gallery))
+            AvatarIcon(painterResource(id = R.drawable.ic_exclamation_1))
 
             Column {
                 Text("Tutor", style = HanasTheme.typography.xsRegular)
@@ -231,6 +216,6 @@ private fun SectionContainer(
 @Composable
 private fun Preview() {
     HanasTheme {
-        HomeScreen({})
+        HomeScreen(emptyList(), emptyList(), {}, {})
     }
 }

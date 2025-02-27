@@ -1,4 +1,4 @@
-package com.example.hanas.android.ui.component
+package com.example.hanas.android.ui.feature.chat.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

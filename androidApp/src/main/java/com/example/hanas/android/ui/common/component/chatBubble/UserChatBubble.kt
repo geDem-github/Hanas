@@ -1,11 +1,11 @@
-package com.example.hanas.android.ui.component.chatBubble
+package com.example.hanas.android.ui.feature.chat.component.chatBubble
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.hanas.android.ui.theme.HanasTheme
 
 @Composable
-fun AiChatBubble(
+fun UserChatBubble(
     modifier: Modifier = Modifier,
     message: String,
     actions: List<ChatBubbleAction>,
@@ -13,8 +13,8 @@ fun AiChatBubble(
     BaseChatBubble(
         modifier = modifier,
         message = message,
-        backgroundColor = HanasTheme.colorScheme.tertiaryBackground,
-        sharpCorner = CornerPosition.TopStart,
+        backgroundColor = HanasTheme.colorScheme.secondaryBackground,
+        sharpCorner = CornerPosition.TopEnd,
         actions = actions,
     )
 }
