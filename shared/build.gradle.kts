@@ -37,6 +37,14 @@ kotlin {
             implementation(libs.koin.core)
             // Coroutines
             implementation(libs.kotlinx.coroutines)
+            // Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization)
+        }
+        iosMain.dependencies {
+            // Ktor
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

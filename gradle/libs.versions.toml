@@ -10,6 +10,7 @@ serialization = "2.1.0"
 kotlinx-serialization-json = "1.8.0"
 koin = "4.0.2"
 kotlinx-coroutines = "1.10.1"
+ktor = "3.1.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -27,6 +28,11 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin"}
 koin-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin"}
 koin-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin"}
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines"}
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

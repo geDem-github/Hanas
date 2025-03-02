@@ -55,4 +55,6 @@ dependencies {
     implementation(libs.koin.compose)
     implementation(libs.koin.viewmodel)
     implementation(libs.koin.viewmodel.navigation)
+    // Ktor
+    implementation(libs.ktor.client.okhttp)
 }
