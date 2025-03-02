@@ -20,23 +20,24 @@ import com.example.hanas.android.ui.theme.HanasTheme
 @Composable
 fun MicButton(
     modifier: Modifier = Modifier,
-    isRecording: Boolean,
+    isSpeeching: Boolean,
     onClick: () -> Unit,
 ) {
     val containerColor =
-        if (isRecording) HanasTheme.colorScheme.lightBlue.copy(alpha = 0.2f) else HanasTheme.colorScheme.blue
+        if (isSpeeching) HanasTheme.colorScheme.lightBlue.copy(alpha = 0.4f) else HanasTheme.colorScheme.blue
     val borderColor =
-        if (isRecording) HanasTheme.colorScheme.blue.copy(alpha = 0.5f) else Color.Transparent
+        if (isSpeeching) HanasTheme.colorScheme.blue.copy(alpha = 0.5f) else Color.Transparent
 
     Box(
         modifier
             .size(95.dp)
+            .background(color = HanasTheme.colorScheme.gray100)
             .background(color = containerColor, shape = CircleShape)
             .border(color = borderColor, width = 2.dp, shape = CircleShape)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        when (isRecording) {
+        when (isSpeeching) {
             true -> {
                 Icon(
                     modifier = Modifier.size(30.dp),

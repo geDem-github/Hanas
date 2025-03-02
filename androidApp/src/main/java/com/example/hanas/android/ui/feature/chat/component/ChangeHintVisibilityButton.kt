@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.hanas.android.R
 import com.example.hanas.android.ui.theme.HanasTheme
 
-// CancelRecordButtonと構成一緒
+// CancelSpeechButtonと構成一緒
 
 @Composable
 fun ChangeHintVisibilityButton(

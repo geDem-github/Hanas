@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 
 typealias EventFlow<T> = MutableSharedFlow<T>
 
@@ -25,7 +27,9 @@ fun <T> EventEffect(
     LaunchedEffect(eventFlow) {
         supervisorScope {
             eventFlow.collect { event ->
-                block(event)
+                withContext(Dispatchers.Main) {
+                    block(event)
+                }
             }
         }
     }

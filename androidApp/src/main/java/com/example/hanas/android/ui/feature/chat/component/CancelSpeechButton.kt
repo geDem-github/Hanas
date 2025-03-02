@@ -20,7 +20,7 @@ import com.example.hanas.android.ui.theme.HanasTheme
 // ChangeHintVisibilityButtonと構成一緒
 
 @Composable
-fun CancelRecordButton(
+fun CancelSpeechButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {

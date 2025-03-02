@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,10 +31,9 @@ import com.example.hanas.android.ui.common.EventFlow
 import com.example.hanas.android.ui.common.component.TopBar
 import com.example.hanas.android.ui.common.component.TopBarActionButton
 import com.example.hanas.android.ui.common.rememberEventFlow
-import com.example.hanas.android.ui.feature.chat.component.CancelRecordButton
+import com.example.hanas.android.ui.feature.chat.component.CancelSpeechButton
 import com.example.hanas.android.ui.feature.chat.component.ChangeHintVisibilityButton
 import com.example.hanas.android.ui.feature.chat.component.ChatFeed
-import com.example.hanas.android.ui.feature.chat.component.ChatFeedComponentType
 import com.example.hanas.android.ui.feature.chat.component.MicButton
 import com.example.hanas.android.ui.theme.HanasTheme
 
@@ -41,24 +41,36 @@ import com.example.hanas.android.ui.theme.HanasTheme
 fun ChatScreen(
     navController: NavController,
     eventFlow: EventFlow<ChatScreenEvent> = rememberEventFlow(),
-    uiState: ChatUiState = chatScreenPresenter(navController, eventFlow),
+    uiState: ChatUiState =
+        chatScreenPresenter(
+            navController = navController,
+            eventFlow = eventFlow,
+        ),
 ) {
     ChatScreen(
-        chatFeedComponentTypes = uiState.chatFeedComponentTypes,
+        uiState = uiState,
         onAppear = {
             eventFlow.tryEmit(ChatScreenEvent.OnAppear)
         },
         onClickPopBackButton = {
             eventFlow.tryEmit(ChatScreenEvent.OnClickPopBackButton)
         },
+        onClickMicButton = {
+            eventFlow.tryEmit(ChatScreenEvent.OnClickMicButton)
+        },
+        onClickStopSpeechButton = {
+            eventFlow.tryEmit(ChatScreenEvent.OnClickCancelSpeechButton)
+        },
     )
 }
 
 @Composable
 fun ChatScreen(
-    chatFeedComponentTypes: List<ChatFeedComponentType>,
+    uiState: ChatUiState,
     onAppear: () -> Unit,
     onClickPopBackButton: () -> Unit,
+    onClickMicButton: () -> Unit,
+    onClickStopSpeechButton: () -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -92,15 +104,17 @@ fun ChatScreen(
                 modifier =
                     Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 12.dp, vertical = 24.dp)
-                        .verticalScroll(rememberScrollState()),
-                chatFeedComponentTypes = chatFeedComponentTypes,
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 12.dp)
+                        .padding(top = 24.dp, bottom = 160.dp),
+                chatFeedComponentTypes = uiState.chatFeedComponentTypes,
             )
 
             Row(
                 modifier =
                     Modifier
                         .fillMaxWidth()
+                        .height(130.dp)
                         .padding(bottom = 24.dp)
                         .align(Alignment.BottomCenter),
                 horizontalArrangement =
@@ -110,22 +124,23 @@ fun ChatScreen(
                     ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // 録音停止ボタン
-                CancelRecordButton(
+                // 音声入力停止ボタン
+                CancelSpeechButton(
                     modifier = Modifier.size(48.dp),
-                    onClick = {},
+                    onClick = onClickStopSpeechButton,
                 )
 
-                // 録音ボタン
+                // マイクボタン
                 MicButton(
                     modifier =
                         Modifier
                             .offset(y = (-15).dp)
                             .shadow(5.dp, shape = CircleShape)
                             .background(HanasTheme.colorScheme.primaryBackground),
-                    isRecording = false,
+                    isSpeeching = uiState.isSpeeching,
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onClickMicButton()
                     },
                 )
 
@@ -144,6 +159,6 @@ fun ChatScreen(
 @Composable
 private fun Preview() {
     HanasTheme {
-        ChatScreen(emptyList(), {}, {})
+        ChatScreen(ChatUiState(false, emptyList()), {}, {}, {}, {})
     }
 }

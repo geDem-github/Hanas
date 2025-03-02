@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.AiChatBubble
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.ChatBubbleAction
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.UserChatBubble
@@ -41,11 +42,12 @@ fun ChatFeed(
                 is ChatFeedComponentType.AiChatBubble -> {
                     BoxWithConstraints {
                         val maxWidth = getChatBubbleMaxWidth(constraints)
+                        val minWidth = getChatBubbleMinWidth(constraints)
 
                         AiChatBubble(
                             modifier =
                                 Modifier
-                                    .widthIn(max = maxWidth),
+                                    .widthIn(max = maxWidth, min = minWidth),
                             message = componentType.message,
                             actions = componentType.actions,
                         )
@@ -57,11 +59,12 @@ fun ChatFeed(
                         modifier = Modifier.align(Alignment.End),
                     ) {
                         val maxWidth = getChatBubbleMaxWidth(constraints)
+                        val minWidth = getChatBubbleMinWidth(constraints)
 
                         UserChatBubble(
                             modifier =
                                 Modifier
-                                    .widthIn(max = maxWidth),
+                                    .widthIn(max = maxWidth, min = minWidth),
                             message = componentType.message,
                             actions = componentType.actions,
                         )
@@ -84,6 +87,13 @@ fun ChatFeed(
 private fun getChatBubbleMaxWidth(constraints: Constraints): Dp {
     return with(LocalDensity.current) {
         (constraints.maxWidth.toDp() / 1.3.dp).dp
+    }
+}
+
+@Composable
+private fun getChatBubbleMinWidth(constraints: Constraints): Dp {
+    return with(LocalDensity.current) {
+        (constraints.maxWidth.toDp() / 2.5.dp).dp
     }
 }
 
