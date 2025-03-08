@@ -25,28 +25,28 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.hanas.android.ui.theme.HanasTheme
 
-sealed class ChatBubbleAction {
-    abstract val onClick: () -> Unit
+sealed interface ChatBubbleIconButton {
+    val onClick: () -> Unit
 
     data class PlaySound(
         val isPlaying: Boolean,
         override val onClick: () -> Unit,
     ) :
-        ChatBubbleAction()
+        ChatBubbleIconButton
 
     data class Translate(
         override val onClick: () -> Unit,
-    ) : ChatBubbleAction()
+    ) : ChatBubbleIconButton
 
     data class ChangeSentenceVisibility(
         val isVisible: Boolean,
         override val onClick: () -> Unit,
     ) :
-        ChatBubbleAction()
+        ChatBubbleIconButton
 
     data class Retry(
         override val onClick: () -> Unit,
-    ) : ChatBubbleAction()
+    ) : ChatBubbleIconButton
 
     val icon: ImageVector
         @Composable
@@ -82,7 +82,7 @@ internal enum class CornerPosition {
 internal fun BaseChatBubble(
     modifier: Modifier = Modifier,
     message: String,
-    actions: List<ChatBubbleAction>,
+    iconButtons: List<ChatBubbleIconButton>,
     backgroundColor: Color,
     sharpCorner: CornerPosition,
 ) {
@@ -120,7 +120,7 @@ internal fun BaseChatBubble(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            actions.forEach { action ->
+            iconButtons.forEach { action ->
                 IconButton(imageVector = action.icon, onClick = action.onClick)
             }
         }

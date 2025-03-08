@@ -8,13 +8,13 @@ import com.example.hanas.android.ui.theme.HanasTheme
 fun UserChatBubble(
     modifier: Modifier = Modifier,
     message: String,
-    actions: List<ChatBubbleAction>,
+    actions: List<ChatBubbleIconButton>,
 ) {
     BaseChatBubble(
         modifier = modifier,
         message = message,
         backgroundColor = HanasTheme.colorScheme.secondaryBackground,
         sharpCorner = CornerPosition.TopEnd,
-        actions = actions,
+        iconButtons = actions,
     )
 }

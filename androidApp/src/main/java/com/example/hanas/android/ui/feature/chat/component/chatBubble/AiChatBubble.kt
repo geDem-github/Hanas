@@ -8,13 +8,26 @@ import com.example.hanas.android.ui.theme.HanasTheme
 fun AiChatBubble(
     modifier: Modifier = Modifier,
     message: String,
-    actions: List<ChatBubbleAction>,
+    translatedMessage: String,
+    isMessageVisible: Boolean,
+    isTranslated: Boolean,
+    iconButtons: List<ChatBubbleIconButton>,
 ) {
+    fun getMessage(): String {
+        if (!isMessageVisible) {
+            return "---- --- -----"
+        }
+        if (isTranslated) {
+            return translatedMessage
+        }
+        return message
+    }
+
     BaseChatBubble(
         modifier = modifier,
-        message = message,
+        message = getMessage(),
         backgroundColor = HanasTheme.colorScheme.tertiaryBackground,
         sharpCorner = CornerPosition.TopStart,
-        actions = actions,
+        iconButtons = iconButtons,
     )
 }

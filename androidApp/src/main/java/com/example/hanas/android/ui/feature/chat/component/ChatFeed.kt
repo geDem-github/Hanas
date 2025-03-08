@@ -11,21 +11,43 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.AiChatBubble
-import com.example.hanas.android.ui.feature.chat.component.chatBubble.ChatBubbleAction
+import com.example.hanas.android.ui.feature.chat.component.chatBubble.ChatBubbleIconButton
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.UserChatBubble
+import java.util.UUID
 
-sealed interface ChatFeedComponentType {
-    data object TaskIntroduction : ChatFeedComponentType
+interface Identifiable {
+    val id: UUID
+}
 
-    data class AiChatBubble(val message: String, val actions: List<ChatBubbleAction>) :
-        ChatFeedComponentType
+sealed interface ChatFeedComponentType : Identifiable {
+    data class TaskIntroduction(
+        override val id: UUID = UUID.randomUUID(),
+        val text: String,
+    ) : ChatFeedComponentType
 
-    data class UserChatBubble(val message: String, val actions: List<ChatBubbleAction>) :
-        ChatFeedComponentType
+    data class AiChatBubble(
+        override val id: UUID = UUID.randomUUID(),
+        val message: String,
+        val translatedMessage: String?,
+        val isTranslated: Boolean,
+        val isPlayingSound: Boolean,
+        val isMessageVisible: Boolean,
+        val onClickSpeakerButton: () -> Unit,
+        val onClickTranslateButton: () -> Unit,
+        val onClickVisibilityButton: () -> Unit,
+    ) : ChatFeedComponentType
 
-    data class SuggestionGuide(val sentence: String) : ChatFeedComponentType
+    data class UserChatBubble(
+        override val id: UUID = UUID.randomUUID(),
+        val message: String,
+        val onClickRetryButton: () -> Unit,
+    ) : ChatFeedComponentType
+
+    data class SuggestionGuide(
+        override val id: UUID = UUID.randomUUID(),
+        val sentence: String,
+    ) : ChatFeedComponentType
 }
 
 @Composable
@@ -49,7 +71,23 @@ fun ChatFeed(
                                 Modifier
                                     .widthIn(max = maxWidth, min = minWidth),
                             message = componentType.message,
-                            actions = componentType.actions,
+                            translatedMessage = componentType.translatedMessage ?: "",
+                            isMessageVisible = componentType.isMessageVisible,
+                            isTranslated = componentType.isTranslated,
+                            iconButtons =
+                                listOf(
+                                    ChatBubbleIconButton.PlaySound(
+                                        isPlaying = componentType.isPlayingSound,
+                                        onClick = componentType.onClickSpeakerButton,
+                                    ),
+                                    ChatBubbleIconButton.Translate(
+                                        onClick = componentType.onClickTranslateButton,
+                                    ),
+                                    ChatBubbleIconButton.ChangeSentenceVisibility(
+                                        isVisible = componentType.isMessageVisible,
+                                        onClick = componentType.onClickVisibilityButton,
+                                    ),
+                                ),
                         )
                     }
                 }
@@ -62,11 +100,14 @@ fun ChatFeed(
                         val minWidth = getChatBubbleMinWidth(constraints)
 
                         UserChatBubble(
-                            modifier =
-                                Modifier
-                                    .widthIn(max = maxWidth, min = minWidth),
+                            modifier = Modifier.widthIn(max = maxWidth, min = minWidth),
                             message = componentType.message,
-                            actions = componentType.actions,
+                            actions =
+                                listOf(
+                                    ChatBubbleIconButton.Retry(
+                                        onClick = componentType.onClickRetryButton,
+                                    ),
+                                ),
                         )
                     }
                 }
