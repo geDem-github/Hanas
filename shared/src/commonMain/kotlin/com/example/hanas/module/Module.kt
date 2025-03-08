@@ -1,9 +1,10 @@
 package com.example.hanas.module
 
-import com.example.hanas.repository.ChatGptRepository
-import com.example.hanas.repository.ChatGptRepositoryImpl
-import com.example.hanas.usecase.SendChatUseCase
-import com.example.hanas.usecase.SendChatUseCaseImpl
+import com.example.hanas.data.api.ApiClient
+import com.example.hanas.data.repository.ChatGptRepositoryImpl
+import com.example.hanas.domain.repository.ChatGptRepository
+import com.example.hanas.domain.usecase.SendChatUseCase
+import com.example.hanas.domain.usecase.SendChatUseCaseImpl
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -13,4 +14,5 @@ val sharedModule =
     module {
         singleOf(::ChatGptRepositoryImpl) { bind<ChatGptRepository>() }
         factoryOf(::SendChatUseCaseImpl) { bind<SendChatUseCase>() }
+        factory { ApiClient() }
     }

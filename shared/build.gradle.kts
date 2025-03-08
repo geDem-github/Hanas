@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -41,6 +43,8 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization)
+            // Napier
+            implementation("io.github.aakira:napier:2.7.1")
         }
         iosMain.dependencies {
             // Ktor
@@ -55,8 +59,23 @@ kotlin {
 android {
     namespace = "com.example.hanas"
     compileSdk = 35
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         minSdk = 29
+        val localProperties = Properties()
+        localProperties.load(FileInputStream(project.rootProject.file("local.properties")))
+        buildConfigField(
+            type = "String",
+            name = "OPENAI_API_TOKEN",
+            value = "\"${localProperties.getProperty("OPENAI_API_TOKEN")}\"",
+        )
+        buildConfigField(
+            type = "String",
+            name = "CHAT_GPT_API_BASE_URL",
+            value = "\"${localProperties.getProperty("CHAT_GPT_API_BASE_URL")}\"",
+        )
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

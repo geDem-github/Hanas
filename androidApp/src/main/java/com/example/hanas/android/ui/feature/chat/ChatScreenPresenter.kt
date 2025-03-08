@@ -20,7 +20,7 @@ import com.example.hanas.android.ui.feature.chat.component.ChatFeedComponentType
 import com.example.hanas.android.ui.feature.chat.component.chatBubble.ChatBubbleAction
 import com.example.hanas.android.util.mic.HanasIntentFactory
 import com.example.hanas.android.util.mic.HanasRecognitionListener
-import com.example.hanas.usecase.SendChatUseCase
+import com.example.hanas.domain.usecase.SendChatUseCase
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
