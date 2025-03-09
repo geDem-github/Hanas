@@ -29,7 +29,7 @@ fun CancelSpeechButton(
         modifier =
             modifier
                 .background(
-                    color = HanasTheme.colorScheme.red.copy(0.6f),
+                    color = HanasTheme.colorScheme.red.copy(0.7f),
                     shape = CircleShape,
                 )
                 .clip(CircleShape)

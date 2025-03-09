@@ -24,10 +24,10 @@ class ChatGptRepositoryImpl(
 ) : ChatGptRepository {
     private val httpClient: HttpClient = apiClient.httpClient
 
-    // 会話履歴状態
-    private var history: MutableList<Message> = mutableListOf()
-
-    override suspend fun sendMessage(userMessage: Message): Result<Message> {
+    override suspend fun sendMessage(
+        history: List<Message>,
+        userMessage: Message,
+    ): Result<Message> {
         return withContext(Dispatchers.IO) {
             try {
                 val result: SendMessageResponse =
@@ -55,11 +55,6 @@ class ChatGptRepositoryImpl(
                         }
                         .body()
                 val responseMessage = result.choices[0].message.toDomain()
-
-                // 履歴に残す
-                history.add(userMessage)
-                history.add(responseMessage)
-
                 Result.success(responseMessage)
             } catch (e: Exception) {
                 Napier.e("ERROR", e)

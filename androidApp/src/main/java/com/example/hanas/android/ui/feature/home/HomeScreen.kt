@@ -37,7 +37,6 @@ import com.example.hanas.android.ui.feature.home.component.ChatNavCardUiModel
 import com.example.hanas.android.ui.feature.home.component.LessonNavCard
 import com.example.hanas.android.ui.feature.home.component.LessonNavCardUiModel
 import com.example.hanas.android.ui.theme.HanasTheme
-import java.util.UUID
 
 @Composable
 fun HomeScreen(
@@ -56,7 +55,7 @@ fun HomeScreen(
             eventFlow.tryEmit(HomeScreenEvent.OnAppear)
         },
         onClickChatNavCard = {
-            eventFlow.tryEmit(HomeScreenEvent.OnSelectChat(UUID.randomUUID()))
+            eventFlow.tryEmit(HomeScreenEvent.OnSelectChat(it))
         },
     )
 }
@@ -66,7 +65,7 @@ fun HomeScreen(
     chatNavCards: List<ChatNavCardUiModel>,
     lessonNavCards: List<LessonNavCardUiModel>,
     onAppear: () -> Unit,
-    onClickChatNavCard: () -> Unit,
+    onClickChatNavCard: (String) -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -142,7 +141,7 @@ fun HomeScreen(
                                             )
                                             .clickable {
                                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                                onClickChatNavCard()
+                                                onClickChatNavCard(rowItem.id)
                                             },
                                     uiModel = rowItem,
                                 )

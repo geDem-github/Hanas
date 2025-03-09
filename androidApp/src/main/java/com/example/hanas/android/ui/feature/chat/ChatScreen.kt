@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,12 +40,14 @@ import com.example.hanas.android.ui.theme.HanasTheme
 
 @Composable
 fun ChatScreen(
+    chatId: String,
     navController: NavController,
     eventFlow: EventFlow<ChatScreenEvent> = rememberEventFlow(),
     uiState: ChatUiState =
         chatScreenPresenter(
             navController = navController,
             eventFlow = eventFlow,
+            chatId = chatId,
         ),
 ) {
     ChatScreen(
@@ -61,6 +64,9 @@ fun ChatScreen(
         onClickStopSpeechButton = {
             eventFlow.tryEmit(ChatScreenEvent.OnClickCancelSpeechButton)
         },
+        onClickHintButton = {
+            eventFlow.tryEmit(ChatScreenEvent.OnClickHintButton)
+        },
     )
 }
 
@@ -71,6 +77,7 @@ fun ChatScreen(
     onClickPopBackButton: () -> Unit,
     onClickMicButton: () -> Unit,
     onClickStopSpeechButton: () -> Unit,
+    onClickHintButton: () -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -81,7 +88,7 @@ fun ChatScreen(
         topBar = {
             TopBar(
                 modifier = Modifier.statusBarsPadding(),
-                title = "フリートーク",
+                title = uiState.topic ?: "",
                 leftActionButton =
                     TopBarActionButton(
                         icon = Icons.AutoMirrored.Default.ArrowBack,
@@ -107,6 +114,8 @@ fun ChatScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 12.dp)
                         .padding(top = 24.dp, bottom = 160.dp),
+                isAiChatTextVisible = uiState.isAiChatTextVisible,
+                isHintVisible = uiState.isHintVisible,
                 chatFeedComponentTypes = uiState.chatFeedComponentTypes,
             )
 
@@ -124,11 +133,15 @@ fun ChatScreen(
                     ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // 音声入力停止ボタン
-                CancelSpeechButton(
-                    modifier = Modifier.size(48.dp),
-                    onClick = onClickStopSpeechButton,
-                )
+                if (uiState.isSpeeching) {
+                    // 音声入力停止ボタン
+                    CancelSpeechButton(
+                        modifier = Modifier.size(48.dp),
+                        onClick = onClickStopSpeechButton,
+                    )
+                } else {
+                    Spacer(Modifier.size(48.dp))
+                }
 
                 // マイクボタン
                 MicButton(
@@ -147,8 +160,8 @@ fun ChatScreen(
                 // ヒント表示・非表示
                 ChangeHintVisibilityButton(
                     modifier = Modifier.size(48.dp),
-                    isVisible = true,
-                    onClick = { },
+                    isVisible = uiState.isHintVisible,
+                    onClick = onClickHintButton,
                 )
             }
         }
@@ -159,6 +172,13 @@ fun ChatScreen(
 @Composable
 private fun Preview() {
     HanasTheme {
-        ChatScreen(ChatUiState(false, emptyList()), {}, {}, {}, {})
+        ChatScreen(
+            uiState = TODO(),
+            onAppear = TODO(),
+            onClickPopBackButton = TODO(),
+            onClickMicButton = TODO(),
+            onClickStopSpeechButton = TODO(),
+            onClickHintButton = TODO(),
+        )
     }
 }

@@ -6,6 +6,7 @@ data class Message(
 )
 
 enum class Role(val value: String) {
+    Developer("developer"),
     Assistant("assistant"),
     User("user"),
     ;

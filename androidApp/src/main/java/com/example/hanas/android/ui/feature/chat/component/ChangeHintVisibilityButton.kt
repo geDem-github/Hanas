@@ -27,12 +27,14 @@ fun ChangeHintVisibilityButton(
     onClick: () -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
-    val containerColor =
+    val containerColor = HanasTheme.colorScheme.yellow.copy(alpha = 0.8f)
+    val imageVector =
         if (isVisible) {
-            HanasTheme.colorScheme.darkYellow
+            ImageVector.vectorResource(R.drawable.ic_exclamation_slash)
         } else {
-            HanasTheme.colorScheme.yellow
+            ImageVector.vectorResource(R.drawable.ic_exclamation_2)
         }
+
     Box(
         modifier =
             modifier
@@ -49,7 +51,7 @@ fun ChangeHintVisibilityButton(
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
-            imageVector = ImageVector.vectorResource(if (isVisible) R.drawable.ic_exclamation_slash else R.drawable.ic_exclamation_2),
+            imageVector = imageVector,
             contentDescription = null,
             tint = HanasTheme.colorScheme.gray200,
         )

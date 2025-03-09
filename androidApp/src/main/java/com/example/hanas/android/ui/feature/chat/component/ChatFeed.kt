@@ -32,7 +32,6 @@ sealed interface ChatFeedComponentType : Identifiable {
         val translatedMessage: String?,
         val isTranslated: Boolean,
         val isPlayingSound: Boolean,
-        val isMessageVisible: Boolean,
         val onClickSpeakerButton: () -> Unit,
         val onClickTranslateButton: () -> Unit,
         val onClickVisibilityButton: () -> Unit,
@@ -53,6 +52,8 @@ sealed interface ChatFeedComponentType : Identifiable {
 @Composable
 fun ChatFeed(
     modifier: Modifier = Modifier,
+    isAiChatTextVisible: Boolean,
+    isHintVisible: Boolean,
     chatFeedComponentTypes: List<ChatFeedComponentType>,
 ) {
     Column(
@@ -72,7 +73,7 @@ fun ChatFeed(
                                     .widthIn(max = maxWidth, min = minWidth),
                             message = componentType.message,
                             translatedMessage = componentType.translatedMessage ?: "",
-                            isMessageVisible = componentType.isMessageVisible,
+                            isMessageVisible = isAiChatTextVisible,
                             isTranslated = componentType.isTranslated,
                             iconButtons =
                                 listOf(
@@ -84,7 +85,7 @@ fun ChatFeed(
                                         onClick = componentType.onClickTranslateButton,
                                     ),
                                     ChatBubbleIconButton.ChangeSentenceVisibility(
-                                        isVisible = componentType.isMessageVisible,
+                                        isVisible = isAiChatTextVisible,
                                         onClick = componentType.onClickVisibilityButton,
                                     ),
                                 ),
@@ -113,6 +114,7 @@ fun ChatFeed(
                 }
 
                 is ChatFeedComponentType.SuggestionGuide -> {
+                    if (!isHintVisible) return@forEach
                     ChatFeedComponentType.SuggestionGuide(sentence = componentType.sentence)
                 }
 

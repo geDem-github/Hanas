@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.hanas.android.ui.theme.HanasTheme
 
 data class ChatNavCardUiModel(
+    val id: String,
     val title: String,
     val emoji: String,
     val color: Color,

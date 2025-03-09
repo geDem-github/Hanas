@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.hanas.android.ui.common.EventEffect
@@ -19,7 +20,10 @@ import com.example.hanas.android.ui.common.EventFlow
 import com.example.hanas.android.ui.feature.chat.component.ChatFeedComponentType
 import com.example.hanas.android.util.mic.HanasIntentFactory
 import com.example.hanas.android.util.mic.HanasRecognitionListener
+import com.example.hanas.domain.entity.languageActivity.ChatActivity
+import com.example.hanas.domain.usecase.GetChatActivityUseCase
 import com.example.hanas.domain.usecase.SendChatUseCase
+import com.example.hanas.domain.usecase.StartChatActivityUseCase
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import java.util.UUID
@@ -32,6 +36,8 @@ sealed interface ChatScreenEvent {
     data object OnClickMicButton : ChatScreenEvent
 
     data object OnClickCancelSpeechButton : ChatScreenEvent
+
+    data object OnClickHintButton : ChatScreenEvent
 
     data class OnFinishSpeech(val text: String?) : ChatScreenEvent
 
@@ -47,20 +53,30 @@ sealed interface ChatScreenEvent {
 }
 
 data class ChatUiState(
+    val topic: String?,
     val isSpeeching: Boolean,
+    val isAiChatTextVisible: Boolean,
+    val isHintVisible: Boolean,
     val chatFeedComponentTypes: List<ChatFeedComponentType>,
 )
 
 @Composable
 internal fun chatScreenPresenter(
-    mainActivityContext: Activity? = LocalActivity.current,
-    sendChatUseCase: SendChatUseCase = koinInject(),
+    chatId: String,
     navController: NavController,
     eventFlow: EventFlow<ChatScreenEvent>,
+    mainActivityContext: Activity? = LocalActivity.current,
+    sendChatUseCase: SendChatUseCase = koinInject(),
+    getChatActivityUseCase: GetChatActivityUseCase = koinInject(),
+    startChatActivityUseCase: StartChatActivityUseCase = koinInject(),
 ): ChatUiState {
     // State
-    var isSpeeching by remember { mutableStateOf(false) }
-    var chatFeedComponentTypes by remember { mutableStateOf(emptyList<ChatFeedComponentType>()) }
+    var chatActivity by remember { mutableStateOf<ChatActivity?>(null) }
+    var topic by rememberSaveable { mutableStateOf<String?>(null) }
+    var isSpeeching by rememberSaveable { mutableStateOf(false) }
+    var isAiChatTextVisible by rememberSaveable { mutableStateOf(true) }
+    var isHintVisible by rememberSaveable { mutableStateOf(true) }
+    var chatFeedComponentTypes by rememberSaveable { mutableStateOf(emptyList<ChatFeedComponentType>()) }
 
     // 音声認識 権限リクエストランチャー
     val recordAudioRequest =
@@ -77,7 +93,7 @@ internal fun chatScreenPresenter(
 
     // AIチャット作成
     fun createAiChatBubble(
-        id: UUID,
+        id: UUID = UUID.randomUUID(),
         message: String,
     ): ChatFeedComponentType.AiChatBubble {
         return ChatFeedComponentType.AiChatBubble(
@@ -86,7 +102,6 @@ internal fun chatScreenPresenter(
             translatedMessage = null,
             isTranslated = false,
             isPlayingSound = false,
-            isMessageVisible = true,
             onClickSpeakerButton = {
                 eventFlow.tryEmit(
                     ChatScreenEvent.OnClickChatSpeakerButton(id),
@@ -107,7 +122,7 @@ internal fun chatScreenPresenter(
 
     // ユーザーチャット作成
     fun createUserChatBubble(
-        id: UUID,
+        id: UUID = UUID.randomUUID(),
         message: String,
     ): ChatFeedComponentType.UserChatBubble {
         return ChatFeedComponentType.UserChatBubble(
@@ -121,15 +136,44 @@ internal fun chatScreenPresenter(
 
     EventEffect(eventFlow) { event ->
         when (event) {
-            // 画面表示
-            is ChatScreenEvent.OnAppear -> {}
+            /** 画面表示 */
+            is ChatScreenEvent.OnAppear -> {
+                val foundActivity =
+                    getChatActivityUseCase.execute(chatId)
+                        ?: run {
+                            Toast.makeText(mainActivityContext, "不明なエラーが発生しました。", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                            return@EventEffect
+                        }
 
-            // 戻る遷移ボタンタップ
+                chatActivity = foundActivity
+                topic = foundActivity.title
+
+                startChatActivityUseCase
+                    .execute(chatId)
+                    .collect { result ->
+                        result
+                            .fold(
+                                onSuccess = {
+                                    chatFeedComponentTypes =
+                                        chatFeedComponentTypes.plus(
+                                            createAiChatBubble(message = it.content),
+                                        )
+                                },
+                                onFailure = {
+                                    Toast.makeText(mainActivityContext, "不明なエラーが発生しました。", Toast.LENGTH_SHORT).show()
+                                    navController.popBackStack()
+                                },
+                            )
+                    }
+            }
+
+            /** 戻る遷移ボタンタップ */
             is ChatScreenEvent.OnClickPopBackButton -> {
                 navController.popBackStack()
             }
 
-            // マイクボタンタップ
+            /** マイクボタンタップ */
             is ChatScreenEvent.OnClickMicButton -> {
                 // 入力中なら、入力を中止する
                 if (isSpeeching) {
@@ -164,13 +208,18 @@ internal fun chatScreenPresenter(
                 speechRecognizer.startListening(speechRecognizerIntent)
             }
 
-            // 音声認識キャンセルボタンタップ
+            /** 音声認識キャンセルボタンタップ */
             is ChatScreenEvent.OnClickCancelSpeechButton -> {
                 speechRecognizer.cancel()
                 isSpeeching = false
             }
 
-            // 音声認識終了
+            /** ヒントボタンタップ */
+            is ChatScreenEvent.OnClickHintButton -> {
+                isHintVisible = !isHintVisible
+            }
+
+            /** 音声認識終了 */
             is ChatScreenEvent.OnFinishSpeech -> {
                 isSpeeching = false
                 val text = event.text
@@ -184,14 +233,13 @@ internal fun chatScreenPresenter(
 
                         // チャットを送信する
                         sendChatUseCase
-                            .execute(text)
+                            .execute(chatId, text)
                             .collect { result ->
                                 result
                                     .onSuccess { message ->
-                                        val aiMessageId = UUID.randomUUID()
                                         chatFeedComponentTypes =
                                             chatFeedComponentTypes
-                                                .plus(createAiChatBubble(aiMessageId, message))
+                                                .plus(createAiChatBubble(message = message))
                                     }
                                     .onFailure {
                                         Toast
@@ -207,56 +255,59 @@ internal fun chatScreenPresenter(
                 }
             }
 
-            // 音声入力権限レスポンス
+            /** 音声入力権限レスポンス */
             is ChatScreenEvent.OnResponseRecordAudioPermission -> {
                 val message =
                     if (event.isGranted) "音声入力が許可されました" else "音声入力が拒否されました。"
                 Toast.makeText(mainActivityContext, message, Toast.LENGTH_SHORT).show()
             }
 
+            /** リトライボタンタップ */
             is ChatScreenEvent.OnClickRetryButton -> TODO()
 
-            // AIメッセージ読み上げボタンタップ
+            /** AIメッセージ読み上げボタンタップ */
             is ChatScreenEvent.OnClickChatSpeakerButton -> {
                 // TODO: 音声再生・停止
                 chatFeedComponentTypes =
                     chatFeedComponentTypes
                         .map {
                             when {
-                                it is ChatFeedComponentType.AiChatBubble -> it.copy(isPlayingSound = !it.isPlayingSound)
+                                it.id == event.id && it is ChatFeedComponentType.AiChatBubble ->
+                                    it.copy(
+                                        isPlayingSound = !it.isPlayingSound,
+                                    )
+
                                 else -> it
                             }
                         }
             }
 
-            // AIメッセージの翻訳ボタンタップ
+            /** AIメッセージの翻訳ボタンタップ */
             is ChatScreenEvent.OnClickChatTranslateButton -> {
                 chatFeedComponentTypes =
                     chatFeedComponentTypes
                         .map {
                             when {
-                                it is ChatFeedComponentType.AiChatBubble -> it.copy(isTranslated = !it.isTranslated)
+                                it.id == event.id && it is ChatFeedComponentType.AiChatBubble ->
+                                    it.copy(isTranslated = !it.isTranslated)
+
                                 else -> it
                             }
                         }
             }
 
-            // AIメッセージの表示/非表示ボタンタップ
+            /** AIメッセージの表示/非表示ボタンタップ */
             is ChatScreenEvent.OnClickChatVisibilityButton -> {
-                chatFeedComponentTypes =
-                    chatFeedComponentTypes
-                        .map {
-                            when {
-                                it is ChatFeedComponentType.AiChatBubble -> it.copy(isMessageVisible = !it.isMessageVisible)
-                                else -> it
-                            }
-                        }
+                isAiChatTextVisible = !isAiChatTextVisible
             }
         }
     }
 
     return ChatUiState(
+        topic = topic,
         isSpeeching = isSpeeching,
+        isAiChatTextVisible = isAiChatTextVisible,
+        isHintVisible = isHintVisible,
         chatFeedComponentTypes = chatFeedComponentTypes,
     )
 }
